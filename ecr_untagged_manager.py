@@ -5,7 +5,7 @@ import argparse
 # Set up argument parsing
 parser = argparse.ArgumentParser(description='Manage untagged images in AWS ECR.')
 parser.add_argument('-r', '--repository', type=str, required=True, help='The name of the ECR repository.')
-parser.add_argument('-d', '--dryrun', action='store_true', help='Enable dry run mode to simulate deletion.')
+parser.add_argument('-d', '--delete', action='store_true', help='Actually delete the images (default is dry run).')
 
 args = parser.parse_args()
 
@@ -27,9 +27,9 @@ def list_untagged_images(repository_name):
 
     return untagged_images
 
-def batch_delete_images(repository_name, digests, dry_run=False):
-    if dry_run:
-        print("DRY RUN ENABLED: The following images would be deleted:")
+def batch_delete_images(repository_name, digests, delete=False):
+    if not delete:
+        print("DRY RUN: The following images would be deleted (actual deletion not performed):")
         for digest in digests:
             print(f"Repository: {repository_name}, ImageDigest: {digest}")
     else:
@@ -52,8 +52,8 @@ if __name__ == "__main__":
 
     # Batch delete images with an option for dry run
     if untagged_images:
-        batch_delete_images(args.repository, untagged_images, dry_run=args.dryrun)
-        if args.dryrun:
+        batch_delete_images(args.repository, untagged_images, delete=args.delete)
+        if not args.delete:
             print(f"DRY RUN: {len(untagged_images)} untagged images identified for deletion.")
         else:
             print(f"Deleted {len(untagged_images)} untagged images.")
