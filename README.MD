@@ -6,7 +6,9 @@ The ecr_untagged_manager.py script is designed to help manage untagged images in
 ### Features
 
 <b>List Untagged Images</b>: Retrieves all untagged images from the specified ECR repository.
+
 <b>Delete Untagged Images</b>: Deletes the retrieved untagged images in batches.
+
 <b>Dry Run Mode</b>: Simulates the deletion process without actually removing images, allowing for safe testing.
 
 ### Prerequisites
